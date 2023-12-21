@@ -109,35 +109,39 @@
 		/* 设置较低的层级 */
 	}
 
-	.wallpaper {
-		position: absolute;
-		background-color: red;
-		margin-left: 18rpx;
-		margin-right: 15rpx;
-		top: 130px;
-		z-index: 0;
-	}
+	.scroll-view::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+}
+		.wallpaper {
+			position: absolute;
+			background-color: red;
+			margin-left: 18rpx;
+			margin-right: 15rpx;
+			top: 130px;
+			z-index: 0;
+		}
 
-	.u-tabs-wrapper {
-		position: fixed;
-		z-index: 2;
-		background-color: #FFFFFF;
-		top: 5px;
-		left: 0;
-		right: 0;
-		margin-top: 44px;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		/* 更新为 flex-end */
-	}
+		.u-tabs-wrapper {
+			position: fixed;
+			z-index: 2;
+			background-color: #FFFFFF;
+			top: 5px;
+			left: 0;
+			right: 0;
+			margin-top: 44px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			/* 更新为 flex-end */
+		}
 
-	.icon-wrapper {
-		display: flex;
-		margin-right: 30rpx;
-	}
+		.icon-wrapper {
+			display: flex;
+			margin-right: 30rpx;
+		}
 
-	.search-icon {
-		margin-left: 10px;
-	}
+		.search-icon {
+			margin-left: 10px;
+		}
 </style>

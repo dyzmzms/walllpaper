@@ -111,8 +111,8 @@
 							avatar,
 							nickname
 						} = data;
-						console.log(data)
-						console.log(data.data.avatar)
+						// console.log(data)
+						// console.log(data.data.avatar)
 						this.src = data.data.avatar;
 						this.nickname = data.data.nickname;
 						// 在这里可以使用获取到的头像和昵称进行后续操作
@@ -141,12 +141,17 @@
 				console.log(name)
 			},
 			checkTokenExpiration(token) {
-				if (token) { //如果 token 存在
-					// console.log("token存在");
-					const expiresAt = token.expiresAt;
+				if (token) {
+					const jwt = require('jsonwebtoken');
+					const decodedToken = jwt.decode(token);
+					const expiresAt = decodedToken?.exp;
 					const currentTime = Math.floor(Date.now() / 1000);
+					const expiresIn = expiresAt - currentTime;
+					console.log('expiresAt:', expiresAt);
+					console.log("currentTime:",currentTime)			
+					console.log('expiresIn:', expiresIn);
 					const isExpired = currentTime > expiresAt;
-					// console.log("Token 是否过期:", isExpired); //false没有过期 true过期
+					console.log("Token 是否过期:", isExpired); // false 没有过期，true 过期
 					return isExpired;
 				}
 
@@ -177,19 +182,18 @@
 			//登录状态
 			checkLoginStatus() {
 				var token = uni.getStorageSync('token');
-				if (token) { //true 存在
-					this.isLoggedIn = false;
-					if (this.checkTokenExpiration(token)) { //等于 true 的时候 清除数据
+				if (token) { // token 存在
+					if (this.checkTokenExpiration(token)) { // Token 过期
 						uni.removeStorageSync('token');
 						console.log('数据已清除');
-						this.isLoggedIn = true; //显示登录提示
-						this.checkLoginStatus();
+						this.isLoggedIn = true; // 显示登录提示
+					} else {
+						this.isLoggedIn = false;
 					}
-
-				} else if (!token) { //true token 不存在 false 存在 存在不走这里
+				} else { // token 不存在
 					this.isLoggedIn = true;
-					console.log("已经不存在了")
-					console.log(!token)
+					console.log("已经不存在了");
+					console.log(!token);
 				}
 			},
 			checkToken() {
