@@ -13,6 +13,9 @@
 		{
 			"path": "pages/index/index",
 			"style": {
+				"app-plus": {
+					"scrollIndicator": "none"
+				},
 				"navigationBarTitleText": "",
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
@@ -45,6 +48,9 @@
 		{
 			"path": "pages/index/featured",
 			"style": {
+				"app-plus": {
+					"scrollIndicator": "none"
+				},
 				"navigationBarTitleText": "",
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一

@@ -1,101 +1,94 @@
+<!-- 本示例未包含完整css，获取外链css请参考上文，在hello uni-app项目中查看 -->
 <template>
-	<view>    
-		<view>
-			<!-- 2.0.19支持autoBack，默认为false -->
-			<u-navbar title="注册" @leftClick="leftClick" :autoBack="false" :border="true">
-			</u-navbar>
-		</view>
-		<view class="form">
-			<u-form labelPosition="left" :model="form" :rules="rules" ref="form1">
-				<u-form-item label="账号:" prop="mobile" ref="item1">
-					<u-input v-model="form.mobile" type="number" :placeholder="username" maxlength="11"
-						:clearable="clear" border="bottom"></u-input>
-				</u-form-item>
-				<u-form-item label="密码:" prop="password" ref="item1">
-					<u-input v-model="form.password" :placeholder="password" password border="bottom"></u-input>
-				</u-form-item>
-					<view class="a-regiser">
-				<text @click="regiser">点我登录</text>
+	<view>
+		<scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper"
+			@scrolltolower="lower" @scroll="scroll">
+			<view>
+				<u-album :urls="urls2" multipleSize="230rpx" :showMore="false" maxCount="10000"></u-album>
 			</view>
-				<view class="btn">
-					<up-button type="primary" size="small" text="注册" @click="change"></up-button>
-				</view>
-
-			</u-form>
-		</view>
+		</scroll-view>
 	</view>
 </template>
-
 <script>
-	import login from 'request/API/login.js';
 	export default {
 		data() {
 			return {
-				value: '',
-				clear: true,
-				show:true,
-				username: "请输入11位手机号",
-				password: "请输入密码",
-				form: {
-					mobile: "",
-					password: "",
+				scrollTop: 0,
+				old: {
+					scrollTop: 0
 				},
-				rules: {
-					mobile: [{
-						required: true,
-						message: "请输入手机号",
-						trigger: ["blur", "change"],
-					}],
-					password: [{
-						required: true,
-						message: "请输入密码",
-						trigger: ["blur", "change"],
-					}],
-				},
+				urls2: [
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+
+				],
 			}
 		},
 		methods: {
-			regiser() {
-				uni.redirectTo({
-					url: "/pages/login/register",
-				});
+			upper: function(e) {
+				console.log(e)
 			},
-			leftClick() {
-				uni.redirectTo({
-					url: "/pages/login/register",
-				});
+			lower: function(e) {
+				console.log(e)
 			},
-			change() {
-				const mobile = this.form.mobile;
-				const password = this.form.password;
-				login(mobile, password)
-					.then(data => {
-						// 登录成功的处理逻辑
-						console.log( data.token);
-					})
-					.catch(error => {
-						// 登录失败的处理逻辑
-						console.error('登录失败', error);
-					});
+			scroll: function(e) {
+				console.log(e)
+				this.old.scrollTop = e.detail.scrollTop
+			},
+			goTop: function(e) {
+				// 解决view层不同步的问题
+				this.scrollTop = this.old.scrollTop
+				this.$nextTick(function() {
+					this.scrollTop = 0
+				});
 			}
 		}
 	}
 </script>
-
 <style>
-	.form {
-		position: relative;
-		padding: 40px;
-		margin-top: 50%;
+	.scroll-Y {
+		height: 300rpx;
 	}
 
-	.btn {
-		margin-top: 60rpx;
+	.scroll-view_H {
+		white-space: nowrap;
+		width: 100%;
 	}
-	.a-regiser {
-		position: absolute;
-		right: 10%;
-		margin-top: 20rpx;
-		transform: translateY(-50%);
+
+	.scroll-view-item {
+		height: 300rpx;
+		line-height: 300rpx;
+		text-align: center;
+		font-size: 36rpx;
 	}
 </style>
