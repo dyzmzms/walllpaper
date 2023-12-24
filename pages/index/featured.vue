@@ -23,22 +23,21 @@
 		</view>
 		<!-- 导航栏结束 -->
 		<!-- 内容开始 -->
-		<view class="wallpaper" :style="{ height: wallpaperHeight }">
-			<scroll-view scroll-y="true" class="scroll-Y" scroll-x="true">
-				<swiper :current="currentCategory" class="swiper" @change="swiper">
-					<swiper-item v-for="(category, index) in categories" :key="index">
-						<view class="category-content">
-							<u-album :urls="category.urls" multipleSize="250rpx" :showMore="false"
-								maxCount="10000"></u-album>
-						</view>
-					</swiper-item>
-				</swiper>
+		<view class="wallpaper">
+			<scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll">
+				<!-- <u-swiper class="swiper"> -->
+				<view v-if="tabsNum === 0">
+					<!-- 第一个标签对应的内容 -->
+					<u-album :urls="urls2" multipleSize="230rpx" :showMore="false" maxCount="10000"></u-album>
+					<u-loadmore :status="status" />
+				</view>
+				<view v-else-if="tabsNum === 1">
+					<!-- 第二个标签对应的内容 -->
+					<u-album :urls="urls3" multipleSize="230rpx" :showMore="false" maxCount="10000"></u-album>
+				</view>
+				<!-- </u-swiper> -->
 			</scroll-view>
 		</view>
-		<view>
-			<u-loadmore :status="status" />
-		</view>
-
 		<u-tabbar :value="value6" @change="name => value6 = name" :fixed="true" :placeholder="true"
 			:safeAreaInsetBottom="true">
 			<u-tabbar-item text="首页" icon="home" @click="handleTabClick"></u-tabbar-item>
@@ -65,64 +64,63 @@
 				],
 				value6: "",
 				status: 'loading',
+				scrollTop: 0,
+				old: {
+					scrollTop: 0
+				},
 				currentCategory: 0,
 				tabsNum: 0, //标签索引
 				imageHeight: 95,
-				categories: [{
-						name: '男头',
-						urls: ['http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-						]
-					},
-					{
-						name: '女头',
-						urls: [
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-								'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-						]
-					},
-				],
 				urls2: [
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
+					'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
 
 				],
+				urls3: [
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+					'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
+				],
+
 			}
 		},
 		onReachBottom() {
@@ -133,11 +131,12 @@
 				'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
 				'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
 			];
-
-			this.categories.forEach(category => {
-				category.urls.push(...newUrls);
-			});
+			// console.log(0)
+			this.urls2.push(...newUrls);
+			// console.log(this.urls2)
+			// 更新showPage属性以显示加载更多的页面 
 		},
+
 		methods: {
 			navigateBack() {
 				uni.navigateBack({
@@ -156,22 +155,20 @@
 				}), console.log(name)
 			},
 			tabs(index) { //切换标签时切换轮播容器
-				this.currentCategory = index.index
+				this.tabsNum = index.index;
+				console.log(this.tabsNum)
 			},
-			swiper(event) {//切换轮播图时切换标签
+			swiper(event) {
 				const index = event.detail.current;
-				this.tabsNum = index
-			}
-		},
-		computed: {
-			wallpaperHeight() {
-				// console.log(currentCategory)
-				// 计算滚动容器的高度
-				// const currentCategory = this.categories[this.currentCategory];
-				const imageCount = this.categories[0].urls.length;
-				return `${(this.imageHeight) * imageCount}rpx`; //
+				this.tabsNum = index;
 			},
+			scroll: function(e) {
+				console.log(e)
+				this.old.scrollTop = e.detail.scrollTop
+			},
+
 		},
+		computed: {},
 	}
 </script>
 <style>
@@ -181,33 +178,27 @@
 		/* 导航栏高度 + u-tabs-wrapper高度 */
 		width: 100%;
 		background-color: #FFFFFF;
-		margin-top: 80px;
+		top: 150rpx;
 		/* margin-left: 5px; */
 		z-index: 2;
 		/* 设置较低的层级 */
 	}
 
-	.scroll-view::-webkit-scrollbar {
-		width: 0;
-		height: 0;
-	}
-
 	.wallpaper {
-		/* height: 2000rpx; */
-		position: relative;
-		margin-left: 10rpx;
+		/* position: absolute; */
+		margin-left: 18rpx;
 		margin-right: 10rpx;
-		top: 130px;
 		z-index: 0;
+		margin-top: 250rpx;
+		/* height: 900rpx; */
 	}
 
 	.scroll-Y {
 		height: 100%;
-		width: 100%;
 	}
 
 	.swiper {
-		height: 100%;
+		height: auto;
 	}
 
 	.category-content {
@@ -215,7 +206,6 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 	}
-
 
 	.u-tabs-wrapper {
 		position: fixed;
