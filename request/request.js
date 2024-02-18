@@ -6,18 +6,17 @@ export default function request({
 	data,
 	header,
 }) {
-	return new Promise((reslove, reject) => {
+	return new Promise((reslove, reject) => {s
 		uni.request({
 			url: baseUrl + url,
 			method: method,
-			data: {
+			data: {s
 				...data
 			},
 			header: {
 				Authorization: '123' // 在请求头中添加token
 			},
 			success(res) {
-				// console.log(res)
 				if (res.data.code == 1) {
 					reslove(res.data)
 					// console.log(res.data)

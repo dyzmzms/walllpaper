@@ -1,7 +1,7 @@
 <template>
 	<view class="one">
 		<view class="top">
-			<u-icon name="setting" class="setting" size="24"></u-icon>
+			<u-icon name="setting" class="setting" size="24" @click="loginOut"></u-icon>
 			<u-icon name="scan" class="scan" size="30"></u-icon>
 			<!-- 账号信息 -->
 			<!-- 未登录时 -->
@@ -17,7 +17,6 @@
 				<text class="nickname">{{ nickname }}</text>
 				<u-icon name="arrow-right" color="black" size="20" class="arrow-right"></u-icon>
 			</view>
-
 		</view>
 		<view class="two">
 			<view class="vip"><text style="color: #F9F3B1;font-size: 35rpx;">尊享会员</text></view>
@@ -26,8 +25,6 @@
 			</view>
 			<view class="vip-child"><text style="color: #9F9F9F;font-size: 20rpx;">尊享各种特权和福利</text></view>
 			<view class="vip-up"><text>立即开通</text></view>
-			<up-button size="mini" @click="loginOut" text="退出登录"></up-button>
-			<up-button size="mini" @click="checkToken" text="检查token"></up-button>
 		</view>
 		<view class="two-three"></view>
 		<view class="three">
@@ -59,11 +56,16 @@
 			</view>
 		</view>
 		<view style="height: 20px;"></view>
+		<u-popup :show="show" @close="close" @open="open">
+			<view>
+				<up-button type="default" text="退出登录" @click="butOut"></up-button>
+			</view>
+		</u-popup>
 		<u-tabbar :value="value6" @change="name => value6 = name" :fixed="true" :placeholder="true"
 			:safeAreaInsetBottom="true">
 			<u-tabbar-item text="首页" icon="home" @click="handleTabClick"></u-tabbar-item>
-			<u-tabbar-item text="放映厅" icon="photo" @click="handleTabClick"></u-tabbar-item>
-			<u-tabbar-item text="直播" icon="play-right" @click="handleTabClick"></u-tabbar-item>
+			<u-tabbar-item text="精选" icon="photo" @click="handleTabClick"></u-tabbar-item>
+			<u-tabbar-item text="论坛" icon="play-right" @click="handleTabClick"></u-tabbar-item>
 			<u-tabbar-item text="我的" icon="account" @click="handleTabClick"></u-tabbar-item>
 		</u-tabbar>
 	</view>
@@ -75,12 +77,15 @@
 	export default {
 		// 组件的选项
 		data() {
+			
 			return {
 				login: "登录",
 				src: "",
-				value6: "",
+				value6: 3,
 				nickname: "",
+				show: false,
 				isLoggedIn: "",
+				bottonUrl: "",
 				isBtn: false,
 				disabled: true,
 				indexList: [],
@@ -100,9 +105,12 @@
 			console.log("小程序进入后台");
 			// 处理进入后台时的逻辑
 		},
-		onLoad() {
+		onLoad(options) {
 			this.checkLoginStatus();
 			this.loadmore()
+			 // const value6 = options.value6;
+			 // console.log(this.value6 = value6)
+			 // console.log(value6)
 			var token = uni.getStorageSync('token');
 			if (token) {
 				getUser(token)
@@ -111,8 +119,6 @@
 							avatar,
 							nickname
 						} = data;
-						// console.log(data)
-						// console.log(data.data.avatar)
 						this.src = data.data.avatar;
 						this.nickname = data.data.nickname;
 						// 在这里可以使用获取到的头像和昵称进行后续操作
@@ -133,12 +139,22 @@
 				});
 			},
 			handleTabClick: function(name) {
-
-				uni.redirectTo({
-					url: "/pages/index/featured"
-				})
-
-				console.log(name)
+				// console.log(name)
+				this.value6 = name; // 更新当前选中的tab索引
+				// console.log(name)
+				if (name === 1) {
+					uni.redirectTo({
+						url: "/pages/index/start"
+					})
+				} else if (name === 0) {
+					uni.redirectTo({
+						url: "/pages/index/homepage"
+					})
+				} else if (name == 2) {
+					uni.redirectTo({
+						url: "/pages/index/forum"
+					})
+				}
 			},
 			checkTokenExpiration(token) {
 				if (token) {
@@ -148,7 +164,7 @@
 					const currentTime = Math.floor(Date.now() / 1000);
 					const expiresIn = expiresAt - currentTime;
 					console.log('expiresAt:', expiresAt);
-					console.log("currentTime:",currentTime)			
+					console.log("currentTime:", currentTime)
 					console.log('expiresIn:', expiresIn);
 					const isExpired = currentTime > expiresAt;
 					console.log("Token 是否过期:", isExpired); // false 没有过期，true 过期
@@ -163,10 +179,7 @@
 			},
 			//退出登录
 			loginOut: function() {
-				uni.removeStorageSync('token');
-				console.log('数据已清除');
-
-				this.checkLoginStatus();
+				this.show = true
 			},
 			//列表事件
 			scrolltolower() {
@@ -196,13 +209,20 @@
 					console.log(!token);
 				}
 			},
-			checkToken() {
-				var token = uni.getStorageSync('token');
-				if (token) {
-					console.log("token存在")
-				} else if (!token) {
-					console.log("token不存在")
-				}
+			butOut() {
+				// console.log(123)
+				uni.removeStorageSync('token');
+				console.log('数据已清除');
+				this.checkLoginStatus();
+				this.show = false
+			},
+			open() {
+				// this.show = true
+				// console.log('open');
+			},
+			close() {
+				// this.show = false
+				// console.log('close');
 			},
 			//修改用户信息
 			updateUserInfo() {
@@ -239,6 +259,7 @@
 
 	.one {
 		background-color: #F4F3F8;
+
 	}
 
 	/* 头像 */

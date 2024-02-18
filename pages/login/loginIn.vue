@@ -1,248 +1,142 @@
 <template>
-	<view class="u-page">
-		<u-navbar title="" leftIcon="" :fixed="true" @rightClick="rightClick" :autoBack="true" height="5px">
-		</u-navbar>
-		<!-- 导航栏开始 -->
-		<view class="u-tabs-wrapper">
-			<view>
-				<u-tabs :list="list1" :activeStyle="{
-				    color: '#303133',
-				    fontWeight: 'bold',
-				    transform: 'scale(1.20)'
-				}" :inactiveStyle="{
-				    color: '#C5C5C5',
-				    transform: 'scale(1)' 
-				}" itemStyle="padding-left: 15px; padding-right: 15px; height: 34px;"></u-tabs>
-			</view>
-			<view class="icon-wrapper">
-				<u-icon name="search" class="search-icon" size="36"></u-icon>
-			</view>
-		</view>
-		<view class="item">
-			<u-tabs :list="list1" @click="tabs" :current="tabsNum"></u-tabs>
-		</view>
-		<!-- 导航栏结束 -->
-		<!-- 内容开始 -->
-		<view class="wallpaper" :style="{ height: wallpaperHeight }">
-			<scroll-view scroll-y="true" class="scroll-Y" scroll-x="true">
-				<swiper :current="currentCategory" class="swiper" @change="swiper">
-					<swiper-item v-for="(category, index) in categories" :key="index">
-						<view class="category-content">
-							<u-album :urls="category.urls" multipleSize="250rpx" :showMore="false"
-								maxCount="10000"></u-album>
-						</view>
-					</swiper-item>
-				</swiper>
-			</scroll-view>
-		</view>
-		<!-- 内容结束 -->
-		<!-- 加载更多 -->
+	<view>
 		<view>
-			<u-loadmore :status="status" />
+			<!-- 2.0.19支持autoBack，默认为false -->
+			<u-navbar title="登录" @leftClick="leftClick" :autoBack="false" :border="true"></u-navbar>
 		</view>
-		<!-- 底部导航 -->
-		<u-tabbar :value="value6" @change="name => value6 = name" :fixed="true" :placeholder="true"
-			:safeAreaInsetBottom="true">
-			<u-tabbar-item text="首页" icon="home" @click="handleTabClick"></u-tabbar-item>
-			<u-tabbar-item text="放映厅" icon="photo" @click="handleTabClick"></u-tabbar-item>
-			<u-tabbar-item text="直播" icon="play-right" @click="handleTabClick"></u-tabbar-item>
-			<u-tabbar-item text="我的" icon="account" @click="handleTabClick"></u-tabbar-item>
-		</u-tabbar>
+		<view class="form">
+			<u-form labelPosition="left" :model="form" :rules="rules" ref="form1">
+				<u-form-item label="账号:" prop="mobile" ref="item1">
+					<u-input v-model="form.mobile" type="number" :placeholder="username" maxlength="11"
+						:clearable="clear" border="bottom"></u-input>
+				</u-form-item>
+				<u-form-item label="密码:" prop="password" ref="item1">
+					<u-input v-model="form.password" password border="bottom"></u-input>
+				</u-form-item>
+				<view class="a-regiser">
+					<text @click="login">点我登录</text>
+				</view>
+				<view class="btn">
+					<up-button type="primary" size="small" text="登录" @click="change"></up-button>
+				</view>
+			</u-form>
+		</view>
 	</view>
 </template>
 <script>
+	// import login from 'request/API/login.js';
+	import {
+		login
+	} from "../../request/API/login";
 	export default {
 		data() {
 			return {
-				list1: [{
-						name: '头像',
-					}, {
-						name: '壁纸',
-					},
-					{
-						name: '推荐',
-					}
-				],
-				value6: "",
-				status: 'loading',
-				currentCategory: 0,
-				tabsNum: 0, //标签索引
-				imageHeight: 95,
-				categories: [{
-						name: '男头',
-						urls: ['http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-							'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-						]
-					},
-					{
-						name: '女头',
-						urls: [
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-							'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-						]
-					},
-				],
-				urls2: [
-
-				],
+				value: '',
+				clear: true,
+				// isShow: false,
+				username: "用户名/手机号/邮箱",
+				title: 'uview-plus的目标是成为uni-app生态最优秀的UI框架',
+				description: 'uview-plus是uni-app生态专用的UI框架',
+				closable: true,
+				form: {
+					mobile: "",
+					password: "",
+				},
+				rules: {
+					mobile: [{
+						required: true,
+						message: "请输入手机号",
+						trigger: ["blur", "change"],
+					}],
+					password: [{
+						required: true,
+						message: "请输入密码",
+						trigger: ["blur", "change"],
+					}],
+				},
 			}
 		},
-		onReachBottom() {
-			const newUrls = [
-				'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-				'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-				'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-				'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-				'http://qiniu.gaowa.love/比赛系统/404f4f1a665833be7e3bd40e388317a.jpg',
-			];
-			this.categories[this.currentCategory].urls.push(...newUrls);
-			// 更新showPage属性以显示加载更多的页面
-			this.showPage = this.currentCategory;
-		},
-
 		methods: {
-			navigateBack() {
-				uni.navigateBack({
-					delta: 1
-				})
-			},
-			rightClick() {
-				console.log('rightClick');
+			login() {
+				uni.redirectTo({
+					url: "/pages/login/register",
+				});
 			},
 			leftClick() {
-				console.log('leftClick');
-			},
-			handleTabClick: function(name) {
 				uni.redirectTo({
-					url: "/pages/index/index"
-				}), console.log(name)
+					url: "/pages/index/index",
+				});
 			},
-			tabs(index) { //切换标签时切换轮播容器
-				this.currentCategory = index.index
-			},
-			swiper(event) {
-				const index = event.detail.current;
-				this.tabsNum = index;
-				this.currentCategory = index;
-				if (index === 1 && this.categories[1].urls.length === 0) {
-					// 模拟加载第二个页面的数据
-					const simulatedData = [
-						'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-						'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-						'http://qiniu.gaowa.love/Wallpaper/a8827ff28204a9c8ee945525cf2ae9d.jpg',
-						// 继续添加模拟数据...
-					];
-					this.categories[1].urls = simulatedData;
-				}
-				console.log(index);
-			},
-		},
-		computed: {
-			wallpaperHeight() {
-				const currentCategory = this.categories[this.currentCategory];
-				const imageCount = currentCategory.urls.length;
-				return `${this.imageHeight * imageCount}rpx`;
-			},
-		},
+			change() {
+				const mobile = this.form.mobile;
+				const password = this.form.password;
+				const Data = {
+				    mobile: mobile,
+				    password: password
+				  };
+				uni.showToast({
+					// title: '登录中',
+					icon: 'loading',
+					mask: true,
+					// duration: 10000, // 设置显示时长为 10 秒
+				});
+
+				const startTime = new Date().getTime(); // 记录请求开始时间
+				login(Data)
+					.then(data => {
+						// console.log(data)
+						// 登录成功的处理逻辑
+						const endTime = new Date().getTime(); // 记录请求结束时间
+						const requestTime = endTime - startTime; // 计算请求时间
+						// 根据请求时间来确定加载图标的显示时长
+						const minAnimationTime = 1000; // 最小显示时间为 1 秒
+						const animationDuration = Math.max(minAnimationTime, requestTime); // 加载图标的显示时长
+						setTimeout(() => {
+							if (data.token) {
+								// 登录成功，进行页面跳转或其他操作
+								uni.setStorageSync('token', data.token);
+								uni.redirectTo({
+									url: "/pages/index/index",
+								});
+							} else {
+								// 登录失败，显示错误提示
+								// console.error('登录失败');
+								uni.showToast({
+									title: data.msg,
+									icon: 'none',
+								});
+							}
+						}, animationDuration);
+					})
+					.catch(error => {
+						// 登录失败的处理逻辑
+						console.error('登录失败', error);
+						uni.showToast({
+							title: error.msg,
+							icon: 'none',
+						});
+					});
+			}
+
+		}
 	}
 </script>
+
 <style>
-	.item {
-		position: fixed;
-		/* top: calc(44px + 44px); */
-		/* 导航栏高度 + u-tabs-wrapper高度 */
-		width: 100%;
-		background-color: #FFFFFF;
-		margin-top: 80px;
-		/* margin-left: 5px; */
-		z-index: 2;
-		/* 设置较低的层级 */
-	}
-
-	.scroll-view::-webkit-scrollbar {
-		width: 0;
-		height: 0;
-	}
-
-	.wallpaper {
-		/* height: 2000rpx; */
+	.form {
 		position: relative;
-		margin-left: 10rpx;
-		margin-right: 10rpx;
-		top: 130px;
-		z-index: 0;
+		padding: 40px;
+		margin-top: 50%;
 	}
 
-	.scroll-Y {
-		height: 100%;
-		width: 100%;
+	.btn {
+		margin-top: 60rpx;
 	}
 
-	.swiper {
-		height: 100%;
-	}
-
-	.category-content {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-	}
-
-
-	.u-tabs-wrapper {
-		position: fixed;
-		z-index: 2;
-		background-color: #FFFFFF;
-		top: 5px;
-		left: 0;
-		right: 0;
-		margin-top: 44px;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		/* 更新为 flex-end */
-	}
-
-	.icon-wrapper {
-		display: flex;
-		margin-right: 30rpx;
-	}
-
-	.search-icon {
-		margin-left: 10px;
+	.a-regiser {
+		position: absolute;
+		right: 10%;
+		margin-top: 20rpx;
+		transform: translateY(-50%);
 	}
 </style>

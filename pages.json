@@ -11,49 +11,84 @@
 	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/index/index",
+			"path": "pages/index/homepage", //首页
 			"style": {
 				"app-plus": {
 					"scrollIndicator": "none"
 				},
 				"navigationBarTitleText": "",
 				"navigationStyle": "custom",
-				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+				"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
 			}
 		},
 		{
-			"path": "pages/login/register",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
-			}
-		},
-		{
-			"path": "pages/login/loginIn",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
-			}
-		},
-		{
-			"path": "pages/index/update",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
-			}
-		},
-		{
-			"path": "pages/index/featured",
+			"path": "pages/index/index", //我的
 			"style": {
 				"app-plus": {
 					"scrollIndicator": "none"
 				},
 				"navigationBarTitleText": "",
 				"navigationStyle": "custom",
-				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+				"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+		},
+		{
+			"path": "pages/login/register", //注册
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+		},
+		{
+			"path": "pages/login/loginIn", //登录
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+		},
+
+		{
+			"path": "pages/index/start", //精选图片
+			"style": {
+				"app-plus": {
+					"scrollIndicator": "none"
+				},
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+		},
+		{
+			"path": "pages/index/forum", //论坛
+			"style": {
+				"app-plus": {
+					"scrollIndicator": "none"
+				},
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+		}, {
+			"path": "pages/index/addforum", //添加论坛文章
+			"style": {
+				"app-plus": {
+					"scrollIndicator": "none"
+				},
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
+			}
+		}, {
+			"path": "pages/index/editforum", //添加论坛文章
+			"style": {
+				"app-plus": {
+					"scrollIndicator": "none"
+				},
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
 			}
 		}
 	],
